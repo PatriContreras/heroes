@@ -32,7 +32,7 @@ export class HeroesComponent implements OnInit {
       console.log(res)
       this.data = res;
       this.filteredData = structuredClone(res);
-      this.dataSource = new MatTableDataSource<Hero>(this.data);
+      this.dataSource = new MatTableDataSource<Hero>(this.filteredData);
       this.dataSource.paginator = this.paginator;
     })
   }
@@ -40,6 +40,7 @@ export class HeroesComponent implements OnInit {
   search = (): void => {
     this.filteredData = this.data.filter(hero => hero.name.includes(this.searchInput.value.value));
     this.dataSource = new MatTableDataSource<Hero>(this.filteredData);
+    this.dataSource.paginator = this.paginator;
   }
 
 }
