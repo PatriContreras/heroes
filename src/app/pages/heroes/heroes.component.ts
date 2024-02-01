@@ -7,6 +7,7 @@ import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { HeroesService } from 'src/app/services/heroes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { lastValueFrom, pipe } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-heroes',
@@ -28,7 +29,7 @@ export class HeroesComponent implements OnInit {
 
   displaySpinner = false;
 
-  constructor(private heroesService: HeroesService, public dialog: MatDialog) {
+  constructor(private heroesService: HeroesService, public dialog: MatDialog, private router: Router) {
 
   }
 
@@ -78,6 +79,10 @@ export class HeroesComponent implements OnInit {
     this.heroesService.deleteHero(id).subscribe(() =>
       this.displaySpinner = false
     )
+  }
+
+  navigate(id: number) {
+    this.router.navigate([`hero/${id}`])
   }
 
 }
