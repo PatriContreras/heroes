@@ -2,8 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { Hero } from 'src/app/models/heroes';
 import { HeroesService } from 'src/app/services/heroes.service';
+import { MatDialog } from '@angular/material/dialog';
+import { lastValueFrom, pipe } from 'rxjs';
 
 @Component({
   selector: 'app-heroes',
@@ -23,13 +26,14 @@ export class HeroesComponent implements OnInit {
     value: new FormControl('')
   })
 
-  constructor(private heroesService: HeroesService) {
+  displaySpinner = false;
+
+  constructor(private heroesService: HeroesService, public dialog: MatDialog) {
 
   }
 
   ngOnInit() {
     this.heroesService.getAllHeroes().subscribe(res => {
-      console.log(res)
       this.data = res;
       this.filteredData = structuredClone(res);
       this.dataSource = new MatTableDataSource<Hero>(this.filteredData);
@@ -43,4 +47,14 @@ export class HeroesComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  async addHero() {
+    const dialogRef = this.dialog.open(DialogComponent);
+    const result = await lastValueFrom(dialogRef.afterClosed())
+    this.displaySpinner = true;
+    this.heroesService.createNewHero(result.value).subscribe()
+    this.displaySpinner = false;
+  }
+
 }
+
+

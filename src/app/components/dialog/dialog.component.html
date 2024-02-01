@@ -1,3 +1,38 @@
-<p>
-  dialog works!
-</p>
+<h2 mat-dialog-title>{{ text.addHeroDialogTitle }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="addHeroForm">
+    <mat-form-field>
+      <mat-label>{{ text.name }}</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ text.publisher }}</mat-label>
+      <input matInput formControlName="publisher" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ text.alter_ego }}</mat-label>
+      <input matInput formControlName="alterEgo" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ text.first_appearance }}</mat-label>
+      <input matInput formControlName="firstAppearance" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ text.characters }}</mat-label>
+      <input matInput formControlName="characters" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="warn" cdkFocusInitial (click)="close()">
+    {{ text.cancel }}
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="addHeroForm"
+    [disabled]="addHeroForm.invalid"
+  >
+    {{ text.save }}
+  </button>
+</mat-dialog-actions>

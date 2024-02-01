@@ -14,4 +14,8 @@ export class HeroesService {
     return this._http.get<Hero[]>(this.baseUrl)
   }
 
+  createNewHero(body: Hero): Observable<Hero> {
+    return this._http.post<Hero>(this.baseUrl, body)
+  }
+
 }
