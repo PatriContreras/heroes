@@ -18,4 +18,12 @@ export class HeroesService {
     return this._http.post<Hero>(this.baseUrl, body)
   }
 
+  updateHero(body: Hero): Observable<Hero> {
+    return this._http.put<Hero>(`${this.baseUrl}/${body.id}`, body);
+  }
+
+  deleteHero(id: number): Observable<Hero> {
+    return this._http.delete<Hero>(`${this.baseUrl}/${id}`);
+  }
+
 }

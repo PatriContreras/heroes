@@ -18,7 +18,7 @@ import { Hero } from 'src/app/models/heroes';
     MatInputModule,
     FormsModule, ReactiveFormsModule]
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
 
   text = text;
 
@@ -31,6 +31,18 @@ export class DialogComponent {
   })
 
   constructor(public dialogRef: MatDialogRef<DialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Hero) { }
+
+  ngOnInit() {
+    if (this.data) {
+      this.addHeroForm = new FormGroup({
+        name: new FormControl(this.data.name, Validators.required),
+        publisher: new FormControl(this.data.publisher, Validators.required),
+        alterEgo: new FormControl(this.data.alter_ego, Validators.required),
+        firstAppearance: new FormControl(this.data.first_appearance, Validators.required),
+        characters: new FormControl(this.data.characters, Validators.required),
+      })
+    }
+  }
 
   close = () => { this.dialogRef.close() }
 }
