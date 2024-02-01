@@ -2,7 +2,12 @@
   <nav>
     <form [formGroup]="searchInput">
       <mat-form-field>
-        <input matInput placeholder="Buscar" formControlName="value" />
+        <input
+          matInput
+          placeholder="Buscar por nombre"
+          formControlName="value"
+          (keyup)="search()"
+        />
       </mat-form-field>
     </form>
     <button mat-raised-button color="primary">Añadir</button>

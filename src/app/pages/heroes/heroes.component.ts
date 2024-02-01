@@ -15,12 +15,14 @@ export class HeroesComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'publisher', 'alter_ego', 'first_appearance', 'characters'];
   data: Hero[] = [];
+  filteredData: Hero[] | [];
 
   dataSource = new MatTableDataSource<Hero>;
 
   searchInput = new FormGroup({
     value: new FormControl('')
   })
+
   constructor(private heroesService: HeroesService) {
 
   }
@@ -29,10 +31,15 @@ export class HeroesComponent implements OnInit {
     this.heroesService.getAllHeroes().subscribe(res => {
       console.log(res)
       this.data = res;
+      this.filteredData = structuredClone(res);
       this.dataSource = new MatTableDataSource<Hero>(this.data);
       this.dataSource.paginator = this.paginator;
-
     })
-
   }
+
+  search = (): void => {
+    this.filteredData = this.data.filter(hero => hero.name.includes(this.searchInput.value.value));
+    this.dataSource = new MatTableDataSource<Hero>(this.filteredData);
+  }
+
 }
