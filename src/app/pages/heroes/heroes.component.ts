@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { HeroesService } from 'src/app/services/heroes.service';
 import { MatDialog } from '@angular/material/dialog';
-import { lastValueFrom, pipe } from 'rxjs';
+import { catchError, concatMap, delay, lastValueFrom, of, pipe, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { DialogDeleteComponent } from 'src/app/components/dialog-delete/dialog-delete.component';
 
@@ -25,7 +25,8 @@ export class HeroesComponent implements OnInit {
   dataSource = new MatTableDataSource<Hero>;
 
   searchInput = new FormGroup({
-    value: new FormControl('')
+    valuePartialName: new FormControl(''),
+    valueName: new FormControl('')
   })
 
   displaySpinner = false;
@@ -43,45 +44,86 @@ export class HeroesComponent implements OnInit {
     })
   }
 
-  search = (): void => {
-    this.filteredData = this.data.filter(hero => hero.name?.includes(this.searchInput.value.value));
+  searchPartialName = (): void => {
+    this.filteredData = this.data.filter(hero => hero.name?.toLowerCase().includes(this.searchInput.value.valuePartialName.toLowerCase()));
     this.dataSource = new MatTableDataSource<Hero>(this.filteredData);
     this.dataSource.paginator = this.paginator;
   }
 
-  //TODO FIX SPINNER
-  // ADD CATCH ERROR
+  searchExactName = (event): void => {
+    this.heroesService.getHeroesWithName(event.target.value).pipe(
+      tap(() => this.displaySpinner = true),
+      delay(1000),
+      catchError((err) => of(err))
+    ).subscribe((res) => {
+      this.dataSource = new MatTableDataSource<Hero>(res);
+      this.dataSource.paginator = this.paginator;
+      this.displaySpinner = false
+    });
+  }
+
   addHero = async (): Promise<any> => {
     const dialogRef = this.dialog.open(DialogComponent);
     const result = await lastValueFrom(dialogRef.afterClosed())
-    this.displaySpinner = true;
-    this.heroesService.createNewHero(result.value).subscribe(() =>
-      this.displaySpinner = false
-    )
+    if (result) {
+      this.heroesService.createNewHero(result.value).pipe(
+        tap(() => this.displaySpinner = true),
+        delay(2000),
+        concatMap(() => this.heroesService.getAllHeroes()),
+        catchError((err) => of(err))
+      ).subscribe((res) => {
+        this.dataSource = new MatTableDataSource<Hero>(res);
+        this.dataSource.paginator = this.paginator;
+        this.displaySpinner = false
+      }
+      )
+    }
+
   }
 
   editHero = async (id: string): Promise<any> => {
-    const hero = this.data.filter(hero => hero.id === id);
+    const hero = this.filteredData.filter(hero => hero.id === id);
     const dialogRef = this.dialog.open(DialogComponent, { data: hero[0] });
     const result = await lastValueFrom(dialogRef.afterClosed())
-    const body = {
-      ...result[0],
-      id: id
+    if (result) {
+      const body = {
+        ...result.value,
+        id: id
+      }
+
+      console.log(body)
+
+      this.heroesService.updateHero(body).pipe(
+        tap(() => this.displaySpinner = true),
+        delay(2000),
+        concatMap(() => this.heroesService.getAllHeroes()),
+        catchError((err) => of(err))
+      ).subscribe((res) => {
+        this.dataSource = new MatTableDataSource<Hero>(res);
+        this.dataSource.paginator = this.paginator;
+        this.displaySpinner = false
+      })
     }
 
-    this.displaySpinner = true;
-    this.heroesService.updateHero(body).subscribe(() =>
-      this.displaySpinner = false
-    )
   }
 
   deleteHero = async (hero: Hero): Promise<any> => {
     const dialogRef = this.dialog.open(DialogDeleteComponent, { data: hero.name });
-    this.displaySpinner = true;
-    await lastValueFrom(dialogRef.afterClosed())
-    this.heroesService.deleteHero(hero.id).subscribe(() =>
-      this.displaySpinner = false
-    )
+    const result = await lastValueFrom(dialogRef.afterClosed())
+    console.log(result)
+    if (result !== undefined) {
+      this.heroesService.deleteHero(hero.id).pipe(
+        tap(() => this.displaySpinner = true),
+        delay(2000),
+        concatMap(() => this.heroesService.getAllHeroes()),
+        catchError((err) => of(err))
+      ).subscribe((res) => {
+        this.dataSource = new MatTableDataSource<Hero>(res);
+        this.dataSource.paginator = this.paginator;
+        this.displaySpinner = false
+      })
+    }
+
   }
 
   navigate(id: number) {
@@ -89,5 +131,4 @@ export class HeroesComponent implements OnInit {
   }
 
 }
-
 

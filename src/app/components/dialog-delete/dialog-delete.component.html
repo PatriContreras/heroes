@@ -3,6 +3,10 @@
   ¿Seguro que quieres eliminar a {{ data }}?
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="close()">Cancelar</button>
-  <button mat-button mat-dialog-close cdkFocusInitial>Eliminar</button>
+  <button mat-raised-button color="warn" (click)="close()">
+    {{ text.cancel }}
+  </button>
+  <button mat-raised-button color="primary" mat-dialog-close cdkFocusInitial>
+    {{ text.remove }}
+  </button>
 </mat-dialog-actions>

@@ -3,7 +3,11 @@
   <form [formGroup]="addHeroForm">
     <mat-form-field>
       <mat-label>{{ text.name }}</mat-label>
-      <input matInput formControlName="name" />
+      <input
+        matInput
+        formControlName="name"
+        oninput="this.value = this.value.toUpperCase()"
+      />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ text.publisher }}</mat-label>
@@ -11,11 +15,11 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ text.alter_ego }}</mat-label>
-      <input matInput formControlName="alterEgo" />
+      <input matInput formControlName="alter_ego" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ text.first_appearance }}</mat-label>
-      <input matInput formControlName="firstAppearance" />
+      <input matInput formControlName="first_appearance" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ text.characters }}</mat-label>
@@ -24,7 +28,7 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button color="warn" cdkFocusInitial (click)="close()">
+  <button mat-raised-button color="warn" (click)="close()">
     {{ text.cancel }}
   </button>
   <button

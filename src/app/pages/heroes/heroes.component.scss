@@ -3,6 +3,12 @@ nav {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  form {
+    display: flex;
+    gap: 30px;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 
 article {
@@ -10,8 +16,4 @@ article {
   table td {
     cursor: pointer;
   }
-}
-
-.mat-mdc-progress-spinner {
-  z-index: 1000;
 }

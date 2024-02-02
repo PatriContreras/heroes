@@ -25,8 +25,8 @@ export class DialogComponent implements OnInit {
   addHeroForm = new FormGroup({
     name: new FormControl('', Validators.required),
     publisher: new FormControl('', Validators.required),
-    alterEgo: new FormControl('', Validators.required),
-    firstAppearance: new FormControl('', Validators.required),
+    alter_ego: new FormControl('', Validators.required),
+    first_appearance: new FormControl('', Validators.required),
     characters: new FormControl('', Validators.required),
   })
 
@@ -35,10 +35,10 @@ export class DialogComponent implements OnInit {
   ngOnInit() {
     if (this.data) {
       this.addHeroForm = new FormGroup({
-        name: new FormControl(this.data.name, Validators.required),
+        name: new FormControl(this.data.name.toUpperCase(), Validators.required),
         publisher: new FormControl(this.data.publisher, Validators.required),
-        alterEgo: new FormControl(this.data.alter_ego, Validators.required),
-        firstAppearance: new FormControl(this.data.first_appearance, Validators.required),
+        alter_ego: new FormControl(this.data.alter_ego, Validators.required),
+        first_appearance: new FormControl(this.data.first_appearance, Validators.required),
         characters: new FormControl(this.data.characters, Validators.required),
       })
     }

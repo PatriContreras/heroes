@@ -22,6 +22,10 @@ export class HeroesService {
     return this._http.post<Hero>(this.baseUrl, body)
   }
 
+  getHeroesWithName(text: string): Observable<Hero[]> {
+    return this._http.get<Hero[]>(`${this.baseUrl}?name=${text}`)
+  }
+
   updateHero(body: Hero): Observable<Hero> {
     return this._http.put<Hero>(`${this.baseUrl}/${body.id}`, body);
   }

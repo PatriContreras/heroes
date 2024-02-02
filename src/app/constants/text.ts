@@ -7,6 +7,8 @@ export const characters = 'Personajes'
 export const addHeroDialogTitle = 'Añadir un héroe'
 export const save = 'Guardar'
 export const cancel = 'Cancelar'
+export const remove = 'Eliminar'
+
 
 
 

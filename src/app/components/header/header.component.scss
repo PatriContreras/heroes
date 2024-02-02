@@ -2,4 +2,8 @@ figure {
   overflow: hidden;
   height: 250px;
   margin-bottom: 30px;
+  cursor: pointer;
+  img {
+    width: 100%;
+  }
 }

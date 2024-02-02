@@ -1,6 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import * as text from '../../constants/text'
 
 @Component({
   selector: 'app-dialog-delete',
@@ -9,12 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [MatDialogModule, MatButtonModule]
 })
-export class DialogDeleteComponent implements OnInit {
+export class DialogDeleteComponent {
+  text = text;
 
   constructor(public dialogRef: MatDialogRef<DialogDeleteComponent>, @Inject(MAT_DIALOG_DATA) public data: string) { }
-
-  ngOnInit() {
-  }
 
   close = () => { this.dialogRef.close() }
 
