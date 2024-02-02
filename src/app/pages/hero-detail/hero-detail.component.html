@@ -1,3 +1,22 @@
-<p>
-  hero-detail works!
-</p>
+<section>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ hero?.name }}</mat-card-title>
+      <mat-card-subtitle>{{ hero?.publisher }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div>
+        <h2>{{ text.alter_ego }}</h2>
+        <p>{{ hero?.alter_ego }}</p>
+      </div>
+      <div>
+        <h2>{{ text.characters }}</h2>
+        <p>{{ hero?.characters }}</p>
+      </div>
+      <div>
+        <h2>{{ text.first_appearance }}</h2>
+        <p>{{ hero?.first_appearance }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>

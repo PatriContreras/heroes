@@ -58,7 +58,7 @@
           <button mat-button color="primary" (click)="editHero(element.id)">
             Editar
           </button>
-          <button mat-button color="warn" (click)="deleteHero(element.id)">
+          <button mat-button color="warn" (click)="deleteHero(element)">
             Eliminar
           </button>
         </td>
@@ -71,7 +71,7 @@
     <mat-paginator
       [pageSizeOptions]="[5, 10, 20]"
       showFirstLastButtons
-      aria-label="Select page of periodic elements"
+      aria-label="Selecciona una página"
     >
     </mat-paginator>
   </article>

@@ -8,6 +8,7 @@ import { HeroesService } from 'src/app/services/heroes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { lastValueFrom, pipe } from 'rxjs';
 import { Router } from '@angular/router';
+import { DialogDeleteComponent } from 'src/app/components/dialog-delete/dialog-delete.component';
 
 @Component({
   selector: 'app-heroes',
@@ -43,7 +44,7 @@ export class HeroesComponent implements OnInit {
   }
 
   search = (): void => {
-    this.filteredData = this.data.filter(hero => hero.name.includes(this.searchInput.value.value));
+    this.filteredData = this.data.filter(hero => hero.name?.includes(this.searchInput.value.value));
     this.dataSource = new MatTableDataSource<Hero>(this.filteredData);
     this.dataSource.paginator = this.paginator;
   }
@@ -59,7 +60,7 @@ export class HeroesComponent implements OnInit {
     )
   }
 
-  editHero = async (id: number): Promise<any> => {
+  editHero = async (id: string): Promise<any> => {
     const hero = this.data.filter(hero => hero.id === id);
     const dialogRef = this.dialog.open(DialogComponent, { data: hero[0] });
     const result = await lastValueFrom(dialogRef.afterClosed())
@@ -74,9 +75,11 @@ export class HeroesComponent implements OnInit {
     )
   }
 
-  deleteHero = async (id: number): Promise<any> => {
+  deleteHero = async (hero: Hero): Promise<any> => {
+    const dialogRef = this.dialog.open(DialogDeleteComponent, { data: hero.name });
     this.displaySpinner = true;
-    this.heroesService.deleteHero(id).subscribe(() =>
+    await lastValueFrom(dialogRef.afterClosed())
+    this.heroesService.deleteHero(hero.id).subscribe(() =>
       this.displaySpinner = false
     )
   }

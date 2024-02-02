@@ -14,6 +14,10 @@ export class HeroesService {
     return this._http.get<Hero[]>(this.baseUrl)
   }
 
+  getHeroById(id: string): Observable<Hero> {
+    return this._http.get<Hero>(`${this.baseUrl}/${id}`)
+  }
+
   createNewHero(body: Hero): Observable<Hero> {
     return this._http.post<Hero>(this.baseUrl, body)
   }
@@ -22,7 +26,7 @@ export class HeroesService {
     return this._http.put<Hero>(`${this.baseUrl}/${body.id}`, body);
   }
 
-  deleteHero(id: number): Observable<Hero> {
+  deleteHero(id: string): Observable<Hero> {
     return this._http.delete<Hero>(`${this.baseUrl}/${id}`);
   }
 

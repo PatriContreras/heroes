@@ -5,6 +5,13 @@ nav {
   align-items: center;
 }
 
+article {
+  padding: 20px;
+  table td {
+    cursor: pointer;
+  }
+}
+
 .mat-mdc-progress-spinner {
   z-index: 1000;
 }

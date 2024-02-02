@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
@@ -25,7 +24,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    MatPaginatorModule, MatTableModule, MatDialogModule, MatProgressSpinnerModule
+    MatPaginatorModule,
+    MatTableModule,
+    MatDialogModule,
+    MatProgressSpinnerModule
   ]
 })
 export class HeroesModule { }
