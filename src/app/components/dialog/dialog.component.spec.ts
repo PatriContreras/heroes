@@ -4,16 +4,25 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { DialogComponent } from './dialog.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
   let fixture: ComponentFixture<DialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogComponent ]
+      providers: [provideAnimations(), {
+        provide: MatDialogRef,
+        useValue: []
+      },
+      {
+        provide: MAT_DIALOG_DATA,
+        useValue: []
+      }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

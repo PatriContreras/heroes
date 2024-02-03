@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { DialogDeleteComponent } from './dialog-delete.component';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 describe('DialogDeleteComponent', () => {
   let component: DialogDeleteComponent;
@@ -11,9 +12,16 @@ describe('DialogDeleteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogDeleteComponent ]
+      providers: [{
+        provide: MatDialogRef,
+        useValue: []
+      },
+      {
+        provide: MAT_DIALOG_DATA,
+        useValue: []
+      }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
