@@ -18,7 +18,7 @@
           matInput
           placeholder="Buscar nombre exacto"
           formControlName="valueName"
-          (blur)="searchExactName($event)"
+          (keydown.enter)="searchExactName($event)"
         />
       </mat-form-field>
     </form>

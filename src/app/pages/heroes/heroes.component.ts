@@ -9,7 +9,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { catchError, concatMap, delay, lastValueFrom, of, pipe, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { DialogDeleteComponent } from 'src/app/components/dialog-delete/dialog-delete.component';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-heroes',
   templateUrl: './heroes.component.html',
@@ -36,7 +38,7 @@ export class HeroesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.heroesService.getAllHeroes().subscribe(res => {
+    this.heroesService.getAllHeroes().pipe(untilDestroyed(this)).subscribe(res => {
       this.data = res;
       this.filteredData = structuredClone(res);
       this.dataSource = new MatTableDataSource<Hero>(this.filteredData);
@@ -52,6 +54,7 @@ export class HeroesComponent implements OnInit {
 
   searchExactName = (event): void => {
     this.heroesService.getHeroesWithName(event.target.value).pipe(
+      untilDestroyed(this),
       tap(() => this.displaySpinner = true),
       delay(1000),
       catchError((err) => of(err))
@@ -67,6 +70,7 @@ export class HeroesComponent implements OnInit {
     const result = await lastValueFrom(dialogRef.afterClosed())
     if (result) {
       this.heroesService.createNewHero(result.value).pipe(
+        untilDestroyed(this),
         tap(() => this.displaySpinner = true),
         delay(2000),
         concatMap(() => this.heroesService.getAllHeroes()),
@@ -82,7 +86,7 @@ export class HeroesComponent implements OnInit {
   }
 
   editHero = async (id: string): Promise<any> => {
-    const hero = this.filteredData.filter(hero => hero.id === id);
+    const hero = this.filteredData.filter(hero => hero['id'] === id);
     const dialogRef = this.dialog.open(DialogComponent, { data: hero[0] });
     const result = await lastValueFrom(dialogRef.afterClosed())
     if (result) {
@@ -91,9 +95,8 @@ export class HeroesComponent implements OnInit {
         id: id
       }
 
-      console.log(body)
-
       this.heroesService.updateHero(body).pipe(
+        untilDestroyed(this),
         tap(() => this.displaySpinner = true),
         delay(2000),
         concatMap(() => this.heroesService.getAllHeroes()),
@@ -110,9 +113,10 @@ export class HeroesComponent implements OnInit {
   deleteHero = async (hero: Hero): Promise<any> => {
     const dialogRef = this.dialog.open(DialogDeleteComponent, { data: hero.name });
     const result = await lastValueFrom(dialogRef.afterClosed())
-    console.log(result)
+
     if (result !== undefined) {
       this.heroesService.deleteHero(hero.id).pipe(
+        untilDestroyed(this),
         tap(() => this.displaySpinner = true),
         delay(2000),
         concatMap(() => this.heroesService.getAllHeroes()),

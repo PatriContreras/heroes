@@ -4,7 +4,9 @@ import { concat, concatMap } from 'rxjs';
 import { Hero } from 'src/app/models/heroes';
 import { HeroesService } from 'src/app/services/heroes.service';
 import * as text from '../../constants/text'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-hero-detail',
   templateUrl: './hero-detail.component.html',
@@ -19,7 +21,7 @@ export class HeroDetailComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.pipe(
       concatMap((res) => this.HeroService.getHeroById(res['id']))
-    ).subscribe((hero) => { this.hero = hero; console.log(this.hero) })
+    ).pipe(untilDestroyed(this)).subscribe()
   }
 
 }
