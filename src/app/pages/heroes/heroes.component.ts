@@ -37,7 +37,7 @@ export class HeroesComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.heroesService.getAllHeroes().pipe(untilDestroyed(this)).subscribe(res => {
       this.data = res;
       this.filteredData = structuredClone(res);
