@@ -77,6 +77,7 @@ export class HeroesComponent implements OnInit {
         catchError((err) => of(err))
       ).subscribe((res) => {
         this.dataSource = new MatTableDataSource<Hero>(res);
+        this.data = res;
         this.dataSource.paginator = this.paginator;
         this.displaySpinner = false
       }
@@ -103,6 +104,7 @@ export class HeroesComponent implements OnInit {
         catchError((err) => of(err))
       ).subscribe((res) => {
         this.dataSource = new MatTableDataSource<Hero>(res);
+        this.data = res;
         this.dataSource.paginator = this.paginator;
         this.displaySpinner = false
       })
@@ -123,6 +125,7 @@ export class HeroesComponent implements OnInit {
         catchError((err) => of(err))
       ).subscribe((res) => {
         this.dataSource = new MatTableDataSource<Hero>(res);
+        this.data = res;
         this.dataSource.paginator = this.paginator;
         this.displaySpinner = false
       })
